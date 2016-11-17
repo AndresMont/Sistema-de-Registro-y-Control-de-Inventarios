@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad8407e5-4372-4c95-a3b9-da6713c25d98">
+	<property name="template.type" value="columnar"/>
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="tdni" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dni" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="est" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+ 
+     inv_clientes_proveedores.`CLP_PRIMER_APELLIDO` AS PRIMER_APELLIDO,
+     inv_clientes_proveedores.`CLP_SEGUNDO_APELLIDO` AS SEGUNDO_APELLIDO,
+     inv_clientes_proveedores.`CLP_PRIMER_NOMBRE` AS PRIMER_NOMBRE,
+     inv_clientes_proveedores.`CLP_SEGUNDO_NOMBRE` AS SEGUNDO_NOMBRE,
+    (CASE WHEN(inv_clientes_proveedores.CLP_TIPODNI='I')THEN 'CÉDULA DE IDENTIDAD'WHEN(inv_clientes_proveedores.CLP_TIPODNI='C')THEN 'CÉDULA DE CIUDADANÍA'WHEN(inv_clientes_proveedores.CLP_TIPODNI='R')THEN 'RUC'WHEN(inv_clientes_proveedores.CLP_TIPODNI='P')THEN 'PASAPORTE'END) AS TIPO_DNI,
+     inv_clientes_proveedores.`CLP_DNI` AS DNI,
+     inv_clientes_proveedores.`CLP_DIRECCION` AS DIRECCIÓN,
+     inv_clientes_proveedores.`CLP_TELEFONO` AS TELÉFONO,
+     inv_clientes_proveedores.`CLP_CORREOELECTRONICO` AS CORREOELECTRONICO,
+     (CASE WHEN(inv_clientes_proveedores.`CLP_ESTADO`='A')THEN 'ACTIVO' WHEN(inv_clientes_proveedores.`CLP_ESTADO`='I') THEN 'INACTIVO' END) AS ESTADO
+FROM
+     `inv_clientes_proveedores` inv_clientes_proveedores
+WHERE
+     inv_clientes_proveedores.`CLP_TIPO` = 'C' AND inv_clientes_proveedores.CLP_ESTADO = $P{est} AND inv_clientes_proveedores.CLP_TIPODNI LIKE '%$P!{tdni}%' AND    inv_clientes_proveedores.`CLP_DNI` LIKE '%$P!{dni}%']]>
+	</queryString>
+	<field name="PRIMER_APELLIDO" class="java.lang.String"/>
+	<field name="SEGUNDO_APELLIDO" class="java.lang.String"/>
+	<field name="PRIMER_NOMBRE" class="java.lang.String"/>
+	<field name="SEGUNDO_NOMBRE" class="java.lang.String"/>
+	<field name="TIPO_DNI" class="java.lang.String"/>
+	<field name="DNI" class="java.lang.String"/>
+	<field name="DIRECCIÓN" class="java.lang.String"/>
+	<field name="TELÉFONO" class="java.lang.String"/>
+	<field name="CORREOELECTRONICO" class="java.lang.String"/>
+	<field name="ESTADO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="142" splitType="Stretch">
+			<image>
+				<reportElement x="18" y="24" width="85" height="79" uuid="38a00129-c22a-43f5-b207-44ee58394241"/>
+				<imageExpression><![CDATA["C:\\Users\\swat-\\Dropbox\\Control de Inventarios PI\\web\\Rep_Reportes\\itscologo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="24" y="128" width="520" height="1" uuid="e32bd74b-c1f8-4a0a-a0fc-bc917828062f"/>
+			</line>
+			<staticText>
+				<reportElement x="112" y="57" width="439" height="29" uuid="2d1fe07e-f6dd-4348-869b-7a5c54189388"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="12" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[AUTOMATIZACIÓN DEL REGISTRO Y CONTROL DE INVENTARIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="206" y="86" width="248" height="29" uuid="f0e76390-96aa-48b1-9fc0-34ee86b57271"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE CLIENTES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="24" width="426" height="33" uuid="00d9b21f-fe71-40ee-be95-5bd6c261d7a7"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[INSTITUTO TECNOLÓGICO SUPERIOR "CORDILLERA"]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="249" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="39" y="15" width="492" height="222" uuid="85f0357c-13bb-4c59-8593-e5d5888f5685"/>
+			</rectangle>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="24" width="151" height="20" forecolor="#000000" uuid="bf842d7c-1cac-47e4-a13b-25ef00ec9bef"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PRIMER APELLIDO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="44" width="151" height="20" forecolor="#000000" uuid="067c9599-773b-4592-a458-540aa9b27b74"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SEGUNDO APELLIDO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="44" width="338" height="18" uuid="67044a4b-ff7f-4a66-84a9-68ec7e1598f2"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SEGUNDO_APELLIDO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="64" width="151" height="20" forecolor="#000000" uuid="d1df1565-7503-4b2b-a7d7-6ccfd9a9b6aa"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PRIMER NOMBRE:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="64" width="338" height="18" uuid="9270c593-a8d5-4e3c-8ffb-5a28c155651a"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRIMER_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="84" width="151" height="20" forecolor="#000000" uuid="520d9d08-0e97-4521-8bf2-de1d57345863"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SEGUNDO NOMBRE:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="84" width="338" height="18" uuid="3fa6d1b2-102f-4982-a3b9-5d2e7c17565c"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SEGUNDO_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="104" width="151" height="20" forecolor="#000000" uuid="c6db8e3b-0804-4795-a557-71356a57e5e0"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TIPO DNI:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="104" width="338" height="18" uuid="1740dbdc-dfcd-458b-ba91-df20f959487b"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TIPO_DNI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="124" width="151" height="20" forecolor="#000000" uuid="0330259a-b7a5-466a-abc2-10f9ecafdbd2"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DNI:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="124" width="338" height="18" uuid="8cf76d18-93f4-46ee-b9b6-7e054d340afe"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DNI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="144" width="151" height="20" forecolor="#000000" uuid="883d2f1b-23d2-4c8b-98d9-4c6937f9c9ed"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="144" width="338" height="18" uuid="c7615a47-bf67-4b26-80be-95b5d6bd7366"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DIRECCIÓN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="164" width="151" height="20" forecolor="#000000" uuid="60f6ad35-cd29-44e3-bbb3-31e6bd114b8f"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TELÉFONO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="164" width="338" height="18" uuid="573f2c50-586b-442e-91e0-6f8fd4513de9"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TELÉFONO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="184" width="151" height="20" forecolor="#000000" uuid="b0ff0c83-6e69-413d-9ca8-6b91b0d90510"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CORREO ELECTRÓNICO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="184" width="338" height="18" uuid="a637c407-c832-4250-b007-b2714770c9ee"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CORREOELECTRONICO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="204" width="151" height="20" forecolor="#000000" uuid="94a79f47-ee5d-4dd5-995b-3ebc323ae910"/>
+				<textElement textAlignment="Left">
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ESTADO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="206" y="204" width="338" height="18" uuid="e64e0ae5-2d7d-4442-ac92-b0f803462652"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" mode="Opaque" x="206" y="24" width="309" height="18" uuid="caf8f285-27eb-4c25-855e-6151b6672559"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRIMER_APELLIDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="17" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="4bfb2065-57b3-4cb8-9d58-282096f55a5a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="555" height="13" forecolor="#D0B48E" backcolor="#009966" uuid="171aa0c1-766d-4cbf-9fa5-14df05e652c0"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="0ca88d63-f4eb-4d82-9fc3-a79ac1985d07"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="0" width="103" height="13" forecolor="#FFFFFF" uuid="6d114890-4073-4441-b6ed-0dff95c32d2f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="2" y="0" width="220" height="13" forecolor="#FFFFFF" uuid="9777f272-0677-4f51-a859-ee3c108a52ab"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

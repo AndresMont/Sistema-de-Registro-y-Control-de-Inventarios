@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="511c0328-d440-4cfa-a99f-05af0a165eeb">
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="pro" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bod" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[(SELECT DISTINCT  G.SPB_ID,(SELECT X.PRO_DETALLE FROM INVENTARIOSPI.INV_PRODUCTOS X WHERE X.PRO_ID = $P{pro}) AS PRO_DETALLE,
+ (SELECT Y.BOD_DESCRIPCION FROM INVENTARIOSPI.INV_BODEGAS Y WHERE Y.BOD_ID = $P{bod}) AS BOD_DESCRIPCION,
+
+(SELECT DATE_FORMAT(O.DOC_FECHA,'%d/%m/%Y') FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID 
+AND O.DOC_ID = T.DOC_ID ) AS FECHA_HORA,
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN CONCAT('COMPRA. #  FACTURA ',O.DOC_NUMERO_DOCUMENTO)
+WHEN 'FV' THEN CONCAT('VENTA. #  FACTURA ',O.DOC_NUMERO_DOCUMENTO)
+WHEN  'DC' THEN O.DOC_OBSERVACIONES
+WHEN  'DV' THEN O.DOC_OBSERVACIONES
+WHEN 'DE' THEN O.DOC_OBSERVACIONES
+WHEN 'CO' THEN O.DOC_OBSERVACIONES
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS DOC_DETALLE,
+/************CANTIDAD ENTRADAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN T.DET_CANTIDAD 
+WHEN 'DC' THEN T.DET_CANTIDAD
+WHEN 'FV' THEN TRIM("-")
+WHEN 'DV' THEN TRIM("-")   
+WHEN 'DE' THEN TRIM("-")   
+WHEN 'CO' THEN TRIM("-")
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS CANTIDAD_ENTRADAS,
+
+/************UNITARIO ENTRADAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN T.DET_VALOR_UNITARIO 
+WHEN 'DC' THEN T.DET_VALOR_UNITARIO
+WHEN 'FV' THEN TRIM("-")
+WHEN 'DV' THEN TRIM("-")   
+WHEN 'DE' THEN TRIM("-")   
+WHEN 'CO' THEN TRIM("-")
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS VALOR_UNITARIO_ENTRADAS,
+/************TOTAL ENTRADAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN T.DET_VALOR_TOTAL 
+WHEN 'DC' THEN T.DET_VALOR_TOTAL
+WHEN 'FV' THEN TRIM("-")
+WHEN 'DV' THEN TRIM("-") 
+WHEN 'DE' THEN TRIM("-")   
+WHEN 'CO' THEN TRIM("-")  
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS VALOR_TOTAL_ENTRADAS,
+/************CANTIDAD SALIDAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN TRIM("-") 
+WHEN 'DC' THEN TRIM("-")
+WHEN 'FV' THEN T.DET_CANTIDAD
+WHEN 'DV' THEN T.DET_CANTIDAD   
+WHEN 'DE' THEN T.DET_CANTIDAD 
+WHEN 'CO' THEN T.DET_CANTIDAD 
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS CANTIDAD_SALIDAS,
+/************UNITARIO SALIDAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN TRIM("-")
+WHEN 'DC' THEN TRIM("-")
+WHEN 'FV' THEN T.DET_VALOR_UNITARIO_SALDOB
+WHEN 'DV' THEN T.DET_VALOR_UNITARIO_SALDOB   
+WHEN 'DE' THEN T.DET_VALOR_UNITARIO_SALDOB
+WHEN 'CO' THEN T.DET_VALOR_UNITARIO_SALDOB  
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS VALOR_UNITARIO_SALIDAS,
+/************TOTAL SALIDAS**********/
+(SELECT CASE O.DOC_TIPO_DOCUMENTO
+WHEN 'FC' THEN TRIM("-")
+WHEN 'DC' THEN TRIM("-")
+WHEN 'FV' THEN T.DET_VALOR_TOTAL_SALDOB
+WHEN 'DV' THEN T.DET_VALOR_TOTAL_SALDOB 
+WHEN 'DE' THEN T.DET_VALOR_TOTAL_SALDOB  
+WHEN 'CO' THEN T.DET_VALOR_TOTAL_SALDOB
+END
+ FROM INVENTARIOSPI.INV_DOCUMENTOS O, INVENTARIOSPI.INV_DETALLE T WHERE D.DET_ID = T.DET_ID AND O.DOC_ID = T.DOC_ID ) AS VALOR_TOTAL_SALIDAS,
+
+
+G.SPB_STOCK,G.SPB_VALOR_UNITARIO, G.SPB_VALOR_TOTAL FROM INVENTARIOSPI.INV_SALDOS_POR_BODEGA G,
+INVENTARIOSPI.INV_SALDOS_BODEGA_POR_DETALLE D 
+WHERE  D.SPB_ID=G.SPB_ID AND G.PRO_ID =$P{pro} AND G.BOD_ID=$P{bod} ORDER BY G.SPB_ID)
+
+
+UNION ALL
+
+(
+SELECT DISTINCT  X.SPB_ID,(SELECT X.PRO_DETALLE FROM INVENTARIOSPI.INV_PRODUCTOS X WHERE X.PRO_ID = $P{pro}) AS PRO_DETALLE,
+ (SELECT R.BOD_DESCRIPCION FROM INVENTARIOSPI.INV_BODEGAS R WHERE R.BOD_ID = $P{bod}) AS BOD_DESCRIPCION,
+ 
+(SELECT DATE_FORMAT(I.TRA_FECHA,'%d/%m/%Y') FROM INVENTARIOSPI.INV_TRANSFERENCIAS I, INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S WHERE S.DTR_ID = Y.DTR_ID 
+AND S.TRA_ID = I.TRA_ID ) AS FECHA,
+ (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN 'TRANSFERENCIA (EGRESO)'
+WHEN 'E' THEN 'TRANSFERENCIA (INGRESO)'
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S) DETALLE,
+ (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN TRIM("-")
+WHEN 'E' THEN S.DTR_CANTIDAD
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S) AS CANTIDAD_ENTRADAS,
+ (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN TRIM("-")
+WHEN 'E' THEN S.DTR_VALOR_UNITARIO
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S) AS VALOR_UNITARIO_ENTRADAS,
+  (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN TRIM("-")
+WHEN 'E' THEN S.DTR_VALOR_TOTAL
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S) AS VALOR_TOTAL_ENTRADAS,
+ 
+   (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN S.DTR_CANTIDAD
+WHEN 'E' THEN TRIM("-")
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S) AS CANTIDAD_SALIDAS,
+ 
+ (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN X.SPB_VALOR_UNITARIO
+WHEN 'E' THEN TRIM("-")
+ END FROM INVENTARIOSPI.INV_SALDOS_POR_BODEGA X  WHERE X.BOD_ID=$P{bod} AND X.SPB_ID = Y.SPB_ID AND X.PRO_ID=$P{pro}) AS VALOR_UNITARIO_SALIDAS,
+ 
+  (SELECT CASE Y.SBT_TIPO
+ WHEN 'S' THEN S.DTR_CANTIDAD*X.SPB_VALOR_UNITARIO
+WHEN 'E' THEN TRIM("-")
+ END FROM INVENTARIOSPI.INV_DETALLE_TRANSFERENCIAS S, INVENTARIOSPI.INV_SALDOS_POR_BODEGA X  WHERE X.BOD_ID=$P{bod} AND X.SPB_ID = Y.SPB_ID AND X.PRO_ID=$P{pro}) AS VALOR_TOTAL_SALIDAS,
+ 
+ X.SPB_STOCK, X.SPB_VALOR_UNITARIO, X.SPB_VALOR_TOTAL
+ 
+
+ 
+FROM INVENTARIOSPI.INV_SALDOS_POR_BODEGA X, INVENTARIOSPI.INV_SALDOS_BODEGA_POR_TRANSFERENCIA Y WHERE X.BOD_ID=$P{bod} AND X.SPB_ID = Y.SPB_ID AND X.PRO_ID=$P{pro} ORDER BY X.SPB_ID)]]>
+	</queryString>
+	<field name="SPB_ID" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRO_DETALLE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="BOD_DESCRIPCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA_HORA" class="java.lang.String"/>
+	<field name="DOC_DETALLE" class="java.lang.String"/>
+	<field name="CANTIDAD_ENTRADAS" class="java.lang.String"/>
+	<field name="VALOR_UNITARIO_ENTRADAS" class="java.lang.String"/>
+	<field name="VALOR_TOTAL_ENTRADAS" class="java.lang.String"/>
+	<field name="CANTIDAD_SALIDAS" class="java.lang.String"/>
+	<field name="VALOR_UNITARIO_SALIDAS" class="java.lang.String"/>
+	<field name="VALOR_TOTAL_SALIDAS" class="java.lang.String"/>
+	<field name="SPB_STOCK" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SPB_VALOR_UNITARIO" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SPB_VALOR_TOTAL" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="697" height="66" backcolor="#339900" uuid="5fd12051-5248-4d15-a257-ca5112b76a8b"/>
+				<staticText>
+					<reportElement style="Title" x="9" y="3" width="433" height="27" uuid="cfba3571-c282-4b22-8922-ffdb2f3995aa"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Top">
+						<font size="16" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[INSTITUTO TECNOLÓGICO SUPERIOR "CORDILLERA"                              ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Title" x="7" y="27" width="533" height="27" uuid="4c447e30-e8c9-4589-9b69-ba5315c6ff2c"/>
+					<box topPadding="4" leftPadding="4" bottomPadding="4" rightPadding="4"/>
+					<textElement verticalAlignment="Top">
+						<font size="16" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[AUTOMATIZACIÓN DEL REGISTRO Y CONTROL DE INVENTARIOS                         ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="SubTitle" x="437" y="42" width="253" height="24" forecolor="#FFFFFF" uuid="10a3d97c-ea2a-4850-9d18-1ebe0d6704d9"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[KARDEX POR BODEGA]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="70" width="697" height="47" forecolor="#000000" backcolor="#999900" uuid="6e7a9680-a322-4b6a-87f3-4bce5c80a26e"/>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="92" y="4" width="186" height="18" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="92b67237-3df1-4a41-9fb4-acf6c5d9a8f9"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PRO_DETALLE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Column header" mode="Transparent" x="11" y="24" width="61" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="24a4c8bf-391f-4f00-8f47-ef47912e36eb"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[BODEGA:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="94" y="23" width="184" height="18" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="51e12f72-e9de-451f-bc50-d314de62279f"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{BOD_DESCRIPCION}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="375" y="3" width="137" height="20" forecolor="#FFFFFF" uuid="dd605a86-001f-4454-9cef-bbd0b68ca52f"/>
+					<textElement>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[UNIDAD DE MEDIDA:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="11" y="3" width="100" height="20" forecolor="#FFFFFF" uuid="6621e0a9-e5fc-4a73-8978-4a42a3e62814"/>
+					<textElement>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[PRODUCTO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="439" y="24" width="131" height="20" forecolor="#FFFFFF" uuid="d9395580-0a01-4aca-be09-a4b801168839"/>
+					<textElement>
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[MÉTODO:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="510" y="3" width="100" height="20" forecolor="#FFFFFF" uuid="03911b51-47b8-40c5-b079-b3183f0d079e"/>
+					<textElement>
+						<font size="12" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[UNIDADES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="510" y="24" width="152" height="20" forecolor="#FFFFFF" uuid="fce48440-0901-4515-a20b-004857ab0787"/>
+					<textElement>
+						<font size="12" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[PROMEDIO PONDERADO]]></text>
+				</staticText>
+			</frame>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
+				<reportElement mode="Transparent" x="701" y="11" width="100" height="103" forecolor="#000000" backcolor="#FFFFFF" uuid="7bcbfc24-8d66-4a10-8154-91fa6bc605df"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA["C:\\Users\\swat-\\Dropbox\\Control de Inventarios PI\\web\\Rep_Reportes\\itscologo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<rectangle>
+				<reportElement x="603" y="7" width="194" height="16" backcolor="#FFFFCC" uuid="cf51025f-bfb1-4a4c-a003-7b0405805d01"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="Column header" x="604" y="6" width="195" height="17" forecolor="#000000" backcolor="#FFFFCC" uuid="bd06ddcd-770e-43da-9406-8f9b11f15b97"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SALDOS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="204" y="7" width="199" height="16" backcolor="#FFFFCC" uuid="7374aa4a-1f4f-4efc-b5a0-e57ec6ab7676"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="403" y="7" width="201" height="16" backcolor="#FFFFCC" uuid="a3697ed8-5c32-47c7-97db-fe48e8b759c2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="22" width="796" height="18" backcolor="#FFFFCC" uuid="5a7bf29c-6e29-4d11-bafd-67c104fe02ba"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="Column header" x="0" y="23" width="72" height="18" forecolor="#000000" uuid="ba9af269-fcc3-4c4d-8bf2-da33c896ae81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="72" y="23" width="133" height="18" forecolor="#000000" uuid="2937370e-479e-4ef9-a43c-c2eba0a048be"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DETALLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="206" y="23" width="65" height="18" forecolor="#000000" uuid="57c207be-f7b2-4dae-9991-29bbb86f19d8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="271" y="23" width="65" height="18" forecolor="#000000" uuid="8b20a25d-1d7b-468d-8f1a-05d41c01b7ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/U]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="338" y="23" width="65" height="18" forecolor="#000000" uuid="4b7e741a-0da8-46e7-a97c-f6685a1e7207"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="471" y="23" width="65" height="18" forecolor="#000000" uuid="0af08005-3b7e-44b8-bf08-5e6916bbdc37"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/U]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="405" y="23" width="65" height="18" forecolor="#000000" uuid="a4553329-08eb-433c-a3f3-79b8f309f87c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="537" y="23" width="65" height="18" forecolor="#000000" uuid="a253b3ec-ef33-421a-96af-4ebe682a8d5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="603" y="23" width="65" height="18" forecolor="#000000" uuid="95e8f309-77b9-43f4-98e3-5dfd9ec50e71"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="668" y="23" width="65" height="18" forecolor="#000000" uuid="326c1a04-671d-4d45-abed-e6a1c93fe4d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/U]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="732" y="23" width="64" height="18" forecolor="#000000" uuid="adda6cf2-1320-465a-a036-fbde5256bb3d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[V/T]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="207" y="6" width="196" height="18" forecolor="#000000" backcolor="#000000" uuid="d92b3d46-0209-4529-add1-5c9f980bf775"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ENTRADAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="405" y="6" width="197" height="18" forecolor="#000000" backcolor="#FFFFCC" uuid="188feb68-4e8f-4146-9ce2-e9cda1cf3c0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SALIDAS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="71" y="23" width="1" height="18" uuid="b6262ed3-526d-403a-9232-ef5b84d5e098"/>
+			</line>
+			<line>
+				<reportElement x="203" y="23" width="1" height="18" uuid="147b0825-bf10-469c-9148-70df6805667a"/>
+			</line>
+			<line>
+				<reportElement x="337" y="23" width="1" height="18" uuid="a71d96ca-1649-4233-b945-72821d68f7a6"/>
+			</line>
+			<line>
+				<reportElement x="271" y="23" width="1" height="18" uuid="8dca630a-fb78-4aa0-8bba-907013e6640a"/>
+			</line>
+			<line>
+				<reportElement x="403" y="23" width="1" height="18" uuid="945dd257-4f25-424e-b265-a7f6cf7c7b82"/>
+			</line>
+			<line>
+				<reportElement x="471" y="23" width="1" height="18" uuid="5f5060d6-0d6e-4dd8-b7e2-422a6cdc5cfb"/>
+			</line>
+			<line>
+				<reportElement x="604" y="23" width="1" height="18" uuid="1262cbd8-fddd-42b7-89bc-ecae89fa3f2f"/>
+			</line>
+			<line>
+				<reportElement x="537" y="23" width="1" height="18" uuid="014572b0-c5f2-4fa4-844d-bb12ffd77858"/>
+			</line>
+			<line>
+				<reportElement x="668" y="23" width="1" height="18" uuid="5f31e848-b38c-4cdd-af1e-f947f56e07c0"/>
+			</line>
+			<line>
+				<reportElement x="733" y="23" width="1" height="18" uuid="0b4a15b8-a5ba-4545-a767-1c6c882f4c05"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="797" height="18" uuid="cb779306-93b0-4a06-b7f0-2360eee0e9e5"/>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="2" y="0" width="69" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="7ac20b4d-7679-4985-b2ee-5b4de734b31d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{FECHA_HORA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="72" y="0" width="133" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="551a38c0-580f-48f1-8aab-60dd34296f7d"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="6" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{DOC_DETALLE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="205" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="b8f0fecf-6ca3-4baf-8921-2bdc803cd191"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CANTIDAD_ENTRADAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="272" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="6aa8f70f-c281-4239-b982-96a49717899f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{VALOR_UNITARIO_ENTRADAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="337" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="94e029e4-8a4d-4530-888f-ef8caf2643ee"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{VALOR_TOTAL_ENTRADAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="405" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="64d0909f-adaa-4ee4-82e7-d39fa3b93326"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CANTIDAD_SALIDAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="471" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="a1061698-68bb-4cde-93b2-4cf374f272b5"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{VALOR_UNITARIO_SALIDAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="538" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="8498e86f-07d9-4d32-ab8d-e7c76ce9b18d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{VALOR_TOTAL_SALIDAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="604" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="9fa74e1c-384b-49ed-ace3-0994a7b809a5"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SPB_STOCK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="670" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="0249a7e0-5e64-4a1c-b7fa-367be4e8f483"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SPB_VALOR_UNITARIO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+					<reportElement style="Detail" positionType="Float" mode="Transparent" x="732" y="0" width="65" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="283a1381-6419-49c2-a680-275e194febae"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SPB_VALOR_TOTAL}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="604" y="0" width="1" height="18" uuid="17d077a5-2515-4005-b2f4-febac4366761"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="733" y="0" width="1" height="18" uuid="23f7b309-bdd3-4337-ac3e-5cfe6b2719ba"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="403" y="0" width="1" height="18" uuid="93296209-b973-433d-8e0d-912a5a8b10db"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="537" y="0" width="1" height="18" uuid="684780bf-7076-43d4-b9e2-ec66b52b537d"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="796" y="0" width="1" height="18" uuid="974a9076-e2e4-4138-bdee-d2943445bb40"/>
+				</line>
+				<line>
+					<reportElement x="271" y="0" width="1" height="18" uuid="8a524e05-9066-4ccf-8ec0-5d0814411c6c"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="471" y="0" width="1" height="18" uuid="661195e5-a9df-445d-a71b-73a13dee0641"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="71" y="0" width="1" height="18" uuid="c6217b7e-ab7d-438e-80d8-eee4a5707311"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="668" y="0" width="1" height="18" uuid="b6aaa741-9511-4691-a15f-813685549f6e"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="337" y="0" width="1" height="18" uuid="3e6a5784-79ba-4617-8294-acedde90c553"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="203" y="0" width="1" height="18" uuid="1ec87c6f-8cb4-40b9-9f78-dd3f08ed7460"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement x="1" y="0" width="1" height="18" uuid="7ae0e479-1471-4beb-bce3-1861f81a9bb0"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="8df42509-5a61-483a-8e57-5070422b57ca"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="25" forecolor="#D0B48E" backcolor="#339900" uuid="d716dc7c-e6b6-43c8-bb59-f78ad430fd45"/>
+				<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+					<reportElement style="Column header" mode="Transparent" x="757" y="3" width="40" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="2c9be369-3ea1-41f1-aad0-5e9750f40b0d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement style="Column header" mode="Transparent" x="677" y="3" width="80" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="fd9b7b57-3482-4112-a825-41f08b477f6f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="false">
+					<reportElement style="Column header" mode="Transparent" x="2" y="3" width="197" height="20" forecolor="#FFFFFF" backcolor="#FFFFFF" uuid="ca77fb6d-64b4-4842-a97e-e0e52d521d65"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+						<font fontName="Times New Roman" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

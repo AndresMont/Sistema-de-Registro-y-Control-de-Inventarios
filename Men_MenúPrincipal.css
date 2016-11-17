@@ -1,0 +1,98 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    font-size: 28px;
+    color: white;
+}
+.men{
+
+    background:none;
+    border:none;
+    margin:0;
+    padding: 0;
+}
+.men:hover{
+    cursor:pointer;   
+}
+
+#header{
+    margin: auto;
+    width:1200px;
+}
+ul,ol{
+    list-style: none;
+
+}
+.nav li input{
+    background-color:#4CAF50;
+    color:#fff;
+    padding: 10px 15px;
+    display: block;
+    height:50px;
+    width:300px;
+    border-radius: 30px; 
+   
+}
+.nav li a{
+    background-color:#4CAF50;
+    color:#fff;
+    padding: 9px 10px;
+    display: block;
+    height:30px;
+    width:275px;
+    border-radius: 30px;
+    text-align: center;
+    
+   
+}
+.nav li p{
+    background-color: #4DB6AC;
+    text-decoration: none;
+    padding: 10px 80px;
+     width:100px;
+     text-align: center;
+    border-radius: 30px; 
+}
+.nav li p:hover{
+    -webkit-border-radius: 30px; 
+    -moz-border-radius: 30px; 
+    background-color: #80CBC4;
+    
+}
+.nav li{
+   
+    color:#fff;
+    padding: 10px 15px;
+    display: block;
+}
+.nav li input:hover{
+    background-color: #66BB6A;
+}
+.nav li a:hover{
+    background-color: #66BB6A;
+}
+.nav > li{
+    float:left;
+}
+.nav li ul{
+    display:none;
+    position: absolute;
+    min-width: 80px;
+}
+.nav li:hover>ul{
+    display: block;
+}
+.nav li ul li{
+    position:relative;
+}
+.nav li ul li ul{
+    right:-140px;
+    top:0px;
+}
+a:link{
+    text-decoration: none;
+}
+a:visited{
+    text-decoration: none;
+}
+/*SLIDER*/

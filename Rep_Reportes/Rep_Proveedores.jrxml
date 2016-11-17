@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d230e51b-4543-4004-8a65-256ee907f250">
+	<property name="template.type" value="columnar"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="est" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ruc" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     inv_clientes_proveedores.`CLP_PRIMER_APELLIDO` AS inv_clientes_proveedores_CLP_PRIMER_APELLIDO,
+     inv_clientes_proveedores.`CLP_SEGUNDO_APELLIDO` AS inv_clientes_proveedores_CLP_SEGUNDO_APELLIDO,
+     inv_clientes_proveedores.`CLP_PRIMER_NOMBRE` AS inv_clientes_proveedores_CLP_PRIMER_NOMBRE,
+     inv_clientes_proveedores.`CLP_SEGUNDO_NOMBRE` AS inv_clientes_proveedores_CLP_SEGUNDO_NOMBRE,
+     inv_clientes_proveedores.`CLP_RAZON_SOCIAL` AS inv_clientes_proveedores_CLP_RAZON_SOCIAL,
+     inv_clientes_proveedores.`CLP_NOMBRE_FANTASIA` AS inv_clientes_proveedores_CLP_NOMBRE_FANTASIA,
+
+     inv_clientes_proveedores.`CLP_DNI` AS inv_clientes_proveedores_CLP_DNI,
+     inv_clientes_proveedores.`CLP_DIRECCION` AS inv_clientes_proveedores_CLP_DIRECCION,
+     inv_clientes_proveedores.`CLP_TELEFONO` AS inv_clientes_proveedores_CLP_TELEFONO,
+     inv_clientes_proveedores.`CLP_CORREOELECTRONICO` AS inv_clientes_proveedores_CLP_CORREOELECTRONICO,
+     inv_clientes_proveedores.`CLP_TIPO` AS inv_clientes_proveedores_CLP_TIPO,
+     inv_clientes_proveedores.`CLP_ESTADO` AS inv_clientes_proveedores_CLP_ESTADO
+FROM
+     `inv_clientes_proveedores` inv_clientes_proveedores
+WHERE inv_clientes_proveedores.`CLP_TIPO` ='P' AND inv_clientes_proveedores.`CLP_ESTADO`= $P{est} AND inv_clientes_proveedores.`CLP_DNI` LIKE '%$P!{ruc}%']]>
+	</queryString>
+	<field name="inv_clientes_proveedores_CLP_PRIMER_APELLIDO" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_SEGUNDO_APELLIDO" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_PRIMER_NOMBRE" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_SEGUNDO_NOMBRE" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_RAZON_SOCIAL" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_NOMBRE_FANTASIA" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_DNI" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_DIRECCION" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_TELEFONO" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_CORREOELECTRONICO" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_TIPO" class="java.lang.String"/>
+	<field name="inv_clientes_proveedores_CLP_ESTADO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="4" y="114" width="551" height="1" uuid="213b4d3e-fb65-4185-ad23-0d37de600b00"/>
+			</line>
+			<image>
+				<reportElement x="26" y="25" width="85" height="79" uuid="774deb5e-eadb-4961-942e-065631fe0bc2"/>
+				<imageExpression><![CDATA["C:\\Users\\swat-\\Dropbox\\Control de Inventarios PI\\web\\Rep_Reportes\\itscologo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="232" y="84" width="190" height="29" uuid="c1b3f2d8-555c-409b-aa9a-b2daf85efbbd"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE PROVEEDORES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="124" y="58" width="419" height="29" uuid="75559cae-b82d-4273-9107-a58d34704208"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="13" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[AUTOMATIZACIÓN DEL REGISTRO Y CONTROL DE INVENTARIOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="25" width="426" height="33" uuid="f7cc5f1d-cd0e-433b-bdf4-ce7acbdd7bf1"/>
+				<textElement>
+					<font fontName="Helvetica Condensed Light" size="15" isBold="true" pdfFontName="Helvetica-Bold" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[INSTITUTO TECNOLÓGICO SUPERIOR "CORDILLERA"]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="192" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="18" y="12" width="518" height="161" uuid="0d8d3765-95db-4fa8-9319-6fb8287bbeb1"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="20" width="132" height="20" forecolor="#000000" uuid="7a38d53e-0838-4dee-bb6f-96f40b0a80bb"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RAZÓN SOCIAL:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="20" width="338" height="18" uuid="616ba629-543c-42a7-ab7a-6c57a4977a6d"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_RAZON_SOCIAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="40" width="132" height="20" forecolor="#000000" uuid="5a6640d0-0996-4632-9cec-049a323e955b"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE FANTASÍA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="40" width="377" height="18" uuid="8706778f-7723-4112-ac39-cab342e9b67a"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_NOMBRE_FANTASIA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="61" width="132" height="20" forecolor="#000000" uuid="43ef8b8c-937c-4fa3-81b4-3aec4fe761cb"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[R.U.C:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="61" width="338" height="18" uuid="fc9c9572-d0c0-4c2e-af74-d808a8d0eb2e"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_DNI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="81" width="132" height="20" forecolor="#000000" uuid="9629a0f7-4e3d-4521-8dee-931d73bcbb86"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="81" width="338" height="18" uuid="b5725b5f-6da8-4f3f-a8c5-cb0a968b801d"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_DIRECCION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="101" width="132" height="20" forecolor="#000000" uuid="11fc9d07-1a68-42cd-a88f-7aefa5972f15"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TELÉFONO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="101" width="338" height="18" uuid="eb183fbe-519d-470e-8863-6fe795ab21aa"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_TELEFONO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="121" width="132" height="20" forecolor="#000000" uuid="159e4c7f-aad2-4526-b17b-0f353b8c138e"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CORREO ELECTÓNICOñ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="121" width="386" height="18" uuid="c7d22b5c-d891-4156-9897-4c6d5d22e93e"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_CORREOELECTRONICO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="36" y="142" width="132" height="20" forecolor="#000000" uuid="475f8d9e-f30e-4732-a267-87b9ce289e45"/>
+				<textElement textAlignment="Left">
+					<font isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ESTADO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="172" y="142" width="338" height="18" uuid="a1d98022-9384-4076-9d93-bf91857f03bd"/>
+				<textElement>
+					<font size="14" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_clientes_proveedores_CLP_ESTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="427" y="2" width="103" height="13" forecolor="#FFFFFF" uuid="624a44eb-de4e-4c09-9c05-7309b8ff940f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="-1" y="2" width="220" height="13" forecolor="#FFFFFF" uuid="118da95d-0000-4f38-bf67-0d0676c92ce6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="510" y="2" width="40" height="13" forecolor="#FFFFFF" uuid="51147bf3-2c78-48b9-860c-c25783e1cdab"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Helvetica Condensed Light" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement mode="Opaque" x="2" y="2" width="555" height="13" forecolor="#D0B48E" backcolor="#009966" uuid="4dd71fc6-64fc-41e3-9501-986971b0f998"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="87d4e76f-1bfd-4084-a096-91c908f4da46"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="431" y="0" width="103" height="13" forecolor="#FFFFFF" uuid="9b6d5e53-f213-46ea-8c94-e5be25a722bb"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="2" y="0" width="220" height="13" forecolor="#FFFFFF" uuid="061ceaab-7470-4605-b669-1c46b6131e4c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Helvetica Condensed Light" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

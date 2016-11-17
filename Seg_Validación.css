@@ -1,0 +1,132 @@
+html{
+    background-image:  url("inventarios.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    position: absolute;
+    z-index:1; 
+    width:100%; 
+    height:100%;
+    font-family: 'Helvetica Condensed Light'
+
+}
+
+table{
+    font-size: 18px;
+    border-radius: 30px;
+ 
+}
+.bus::-ms-clear {display: none; } 
+
+.login{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    height: 400px;
+    width: 550px;
+    border-radius: 30px; 
+}
+.tab{
+    border-top-left-radius: 6px;
+    left:15%;
+    background-color: white;
+    border-radius: 30px;
+       text-align: center;
+}
+.tab tr:first-child th:first-child {
+    border-top-left-radius: 30px;
+}
+.tab tr:first-child th:last-child {
+    border-top-right-radius: 30px;
+}
+
+.tab tr:last-child td:first-child {
+    border-bottom-left-radius: 30px;
+}
+.tab tr:last-child td:last-child {
+    border-bottom-right-radius: 30px;
+}
+
+
+.exito{
+
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    height: 300px;
+    width: 500px;
+    background-color: white;
+    border-radius: 30px; 
+}
+input{
+    height: 40px;
+
+    font-size: 28px;
+    font-family: 'Helvetica Condensed Light';
+    border: 1px solid #848484; 
+    -webkit-border-radius: 30px; 
+    -moz-border-radius: 30px; 
+    border-radius: 30px; 
+    outline:0;  
+    padding-left:10px; 
+    padding-right:10px; 
+    text-align: center;
+
+} 
+select{
+    height: 40px;
+
+    font-size: 28px;
+    font-family: 'Helvetica Condensed Light';
+    border: 1px solid #848484; 
+    -webkit-border-radius: 30px; 
+    -moz-border-radius: 30px; 
+    border-radius: 30px; 
+    outline:0;  
+    padding-left:10px; 
+    padding-right:10px; 
+    text-align: center;
+      padding: 0 0 0 20px;
+}
+.botones{
+    width: 280px;
+}
+
+textarea{
+    font-size: 25px;
+    font-family: 'Helvetica Condensed Light';
+    border: 1px solid #848484; 
+    -webkit-border-radius: 30px; 
+    -moz-border-radius: 30px; 
+    border-radius: 30px; 
+    outline:0;  
+    padding-left:10px; 
+    padding-right:10px; 
+    text-align: center;
+}
+
+
+.error{
+
+    background: white; 
+    border: 1px solid #848484; 
+    border-radius: 30px; 
+    box-shadow: 0 0 5px 3px #F55151; 
+    color: black; 
+    outline: 0; 
+    height:40px; 
+    width: 250px; 
+
+}
+.mis{
+    height: 120px;
+}
+/*#can
+{
+    width: 400px;
+}*/
+
+
